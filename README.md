@@ -26,14 +26,14 @@ Right now, the project is focused on proving the networking layer works correctl
 
 ### 1. Open the project folder
 
-Make sure your terminal is inside the folder that contains `day1.cpp`.
+Make sure your terminal is inside the folder that contains `photondb.cpp`.
 
 ### 2. Build the project
 
 Run:
 
 ```bash
-g++ day1.cpp -o day1
+g++ photondb.cpp -o day1
 ```
 
 If the command succeeds, it creates an executable named `day1`.
