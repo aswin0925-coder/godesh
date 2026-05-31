@@ -1,16 +1,20 @@
-# Day 1 TCP Echo Server
+# PhotonDB
 
-This project is a small C++ TCP echo server built with POSIX sockets.
-It listens on port `6379`, accepts one client at a time, and sends back
-whatever the client types.
+PhotonDB is an end-semester project that aims to become a Redis-inspired key-value database.
+The current codebase contains the first networking prototype: a small TCP server that listens on port `6379` and echoes back whatever a client sends.
 
-## What this project does
+## Project overview
 
-- Creates a TCP server socket
+The goal of PhotonDB is to grow from a basic socket server into a simple in-memory database with commands, persistence, and client interaction.
+Right now, the project is focused on proving the networking layer works correctly.
+
+## Current features
+
+- Starts a TCP server using POSIX sockets
 - Binds to `0.0.0.0:6379`
-- Waits for a client connection
+- Accepts one client at a time
 - Reads data from the client
-- Echoes the same data back
+- Sends the same data back to the client
 
 ## Requirements
 
@@ -18,13 +22,13 @@ whatever the client types.
 - `g++`
 - `nc` (netcat) for testing, or `telnet` as a fallback
 
-## Step-by-step setup
+## Getting started
 
 ### 1. Open the project folder
 
 Make sure your terminal is inside the folder that contains `day1.cpp`.
 
-### 2. Build the program
+### 2. Build the project
 
 Run:
 
@@ -34,7 +38,7 @@ g++ day1.cpp -o day1
 
 If the command succeeds, it creates an executable named `day1`.
 
-### 3. Start the server
+### 3. Start PhotonDB
 
 Run:
 
@@ -42,13 +46,11 @@ Run:
 ./day1
 ```
 
-The terminal will look like it is waiting. That is normal because the server is
-listening for a client connection.
+The terminal will stay busy because the server is now waiting for a client connection.
 
 ### 4. Open a second terminal
 
-Keep the server running in the first terminal, then open another terminal in the
-same folder.
+Keep the server running in the first terminal, then open another terminal in the same folder.
 
 ### 5. Connect to the server
 
@@ -58,21 +60,18 @@ Run:
 nc 127.0.0.1 6379
 ```
 
-### 6. Type a message
+### 6. Send a message
 
-Type any text and press Enter. The server should send the same text back.
+Type any text and press Enter.
+PhotonDB should send the same text back.
 
-### 7. Stop the program
+### 7. Stop the server
 
-Press `Ctrl+C` in the server terminal to stop the server.
+Press `Ctrl+C` in the server terminal to stop PhotonDB.
 
-## Example test
+## Quick test
 
-```bash
-./day1
-```
-
-In another terminal:
+You can also test it with a single command:
 
 ```bash
 echo "hello" | nc 127.0.0.1 6379
@@ -84,16 +83,25 @@ Expected output:
 hello
 ```
 
-## Notes
+## Roadmap
+
+Planned next steps for PhotonDB include:
+
+- Adding key-value commands such as `SET` and `GET`
+- Storing data in memory instead of echoing raw input
+- Supporting multiple clients more cleanly
+- Adding persistence so data survives restarts
+- Building a small client protocol similar to Redis
+
+## Limitations
 
 - The server is single-threaded, so it handles one client at a time.
-- The input buffer is 1024 bytes.
-- Port `6379` may already be in use by another service, so you may need to stop
-	that service or change the port in `day1.cpp`.
+- The current buffer size is 1024 bytes.
+- Port `6379` may already be used by another service such as Redis.
+- This version is only the networking foundation, not a full database yet.
 
 ## Troubleshooting
 
-- If build fails, check that `g++` is installed.
-- If the server says `Bind failed`, another program may already be using port
-	`6379`.
+- If the build fails, make sure `g++` is installed.
+- If you see `Bind failed`, another program may already be using port `6379`.
 - If `nc` is not installed, try `telnet 127.0.0.1 6379` instead.
