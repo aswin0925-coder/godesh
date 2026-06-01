@@ -81,3 +81,5 @@ QUIT
 ## Next step
 
 Day 3 should focus on improving the command flow and preparing the storage layer for `SET` and `GET`.
+
+### THANK YOU
