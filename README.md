@@ -1,20 +1,21 @@
 # PhotonDB
 
-PhotonDB is an end-semester project that aims to become a Redis-inspired key-value database.
-The current codebase contains the first networking prototype: a small TCP server that listens on port `6379` and echoes back whatever a client sends.
+PhotonDB is a lightweight, Redis-inspired TCP server written in C++.
+It currently listens on port `6379` and processes simple text commands.
 
 ## Project overview
 
-The goal of PhotonDB is to grow from a basic socket server into a simple in-memory database with commands, persistence, and client interaction.
-Right now, the project is focused on proving the networking layer works correctly.
+The goal of PhotonDB is to grow from a basic socket server into a small in-memory database with commands, persistence, and client interaction.
+Right now, the project focuses on proving the networking layer and command parsing work correctly.
 
 ## Current features
 
 - Starts a TCP server using POSIX sockets
 - Binds to `0.0.0.0:6379`
 - Accepts one client at a time
-- Reads data from the client
-- Sends the same data back to the client
+- Processes line-based text commands
+- Supports `PING`, `ECHO <message>`, `HELP`, and `QUIT`
+- Recognizes `SET`, `GET`, and `DEL`, but storage is not implemented yet
 
 ## Requirements
 
@@ -30,8 +31,6 @@ Make sure your terminal is inside the folder that contains `photondb.cpp`.
 
 ### 2. Build the project
 
-Run:
-
 ```bash
 g++ photondb.cpp -o day1
 ```
@@ -40,13 +39,11 @@ If the command succeeds, it creates an executable named `day1`.
 
 ### 3. Start PhotonDB
 
-Run:
-
 ```bash
 ./day1
 ```
 
-The terminal will stay busy because the server is now waiting for a client connection.
+The terminal will stay busy because the server is waiting for a client connection.
 
 ### 4. Open a second terminal
 
@@ -54,16 +51,27 @@ Keep the server running in the first terminal, then open another terminal in the
 
 ### 5. Connect to the server
 
-Run:
-
 ```bash
 nc 127.0.0.1 6379
 ```
 
-### 6. Send a message
+### 6. Try commands
 
-Type any text and press Enter.
-PhotonDB should send the same text back.
+Type commands one per line and press Enter.
+
+```text
+PING
+ECHO hello
+HELP
+QUIT
+```
+
+Expected behavior:
+
+- `PING` returns `PONG`
+- `ECHO hello` returns `hello`
+- `HELP` lists available commands
+- `QUIT` closes the connection
 
 ### 7. Stop the server
 
@@ -71,24 +79,22 @@ Press `Ctrl+C` in the server terminal to stop PhotonDB.
 
 ## Quick test
 
-You can also test it with a single command:
-
 ```bash
-echo "hello" | nc 127.0.0.1 6379
+echo "PING" | nc 127.0.0.1 6379
 ```
 
 Expected output:
 
 ```bash
-hello
+PONG
 ```
 
 ## Roadmap
 
 Planned next steps for PhotonDB include:
 
-- Adding key-value commands such as `SET` and `GET`
-- Storing data in memory instead of echoing raw input
+- Adding real `SET` and `GET` storage
+- Storing data in memory instead of returning placeholder errors
 - Supporting multiple clients more cleanly
 - Adding persistence so data survives restarts
 - Building a small client protocol similar to Redis
@@ -97,8 +103,8 @@ Planned next steps for PhotonDB include:
 
 - The server is single-threaded, so it handles one client at a time.
 - The current buffer size is 1024 bytes.
+- `SET`, `GET`, and `DEL` still return placeholder responses.
 - Port `6379` may already be used by another service such as Redis.
-- This version is only the networking foundation, not a full database yet.
 
 ## Troubleshooting
 
