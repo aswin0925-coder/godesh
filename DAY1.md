@@ -50,3 +50,6 @@ nc 127.0.0.1 6379
 ## End-of-day result
 
 By the end of Day 1, PhotonDB should still be a simple TCP echo server, but a stable one that is ready for command parsing on Day 2.
+
+### THANK YOU.
+
